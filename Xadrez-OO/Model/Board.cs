@@ -52,6 +52,22 @@
             this.columns = columns;
         }
 
+        public Piece GetPiece (int line, int column) {
+
+            if (line < this.lines && column < this.columns) {
+
+                return pieces[line, column];
+            }
+            else {
+
+                return null;
+            }
+
+        }
+
+        //Class Methods
+
+
     }
 
 }
