@@ -6,10 +6,13 @@ namespace Xadrez_OO.Util {
 
     class Output {
 
+        //String Builder for string building
+        private static StringBuilder showdown; 
+
         public static void ShowBoard(Board board) {
 
-            //String Builder for string building
-            StringBuilder showdown = new StringBuilder();
+            //Instancing StringBuilder
+            showdown = new StringBuilder();
 
             //Recovering line and column numbers
             int MaxLines = board.GetLines();
@@ -17,6 +20,11 @@ namespace Xadrez_OO.Util {
             
             //Verifing board x
             for (int i = 0; i < MaxLines; i ++) {
+
+                //Adding left field indicators
+                showdown.Append(MaxLines - i).Append(" ");
+                Console.Write(showdown.ToString());
+                showdown.Clear();
 
                 //Verifing board y
                 for (int j = 0; j < MaxColumns; j++) {
@@ -26,22 +34,56 @@ namespace Xadrez_OO.Util {
 
                         //Exists
                         showdown.Append(board.GetPiece(i, j)).Append(" ");
+                        ShowPiece(board.GetPiece(i, j));
                     }
                     else {
 
                         //!Exists
                         showdown.Append("- ");
+                        Console.Write(showdown.ToString());
+                        showdown.Clear();
                     }
 
                 }
 
                 //Adding one blank line
                 showdown.Append("\n");
+                Console.Write(showdown.ToString());
+                showdown.Clear();
 
             }
 
+            //Adding the lower field indicators
+            showdown.Append("  A B C D E F G H");
+
             //Writing the board
             Console.Write(showdown.ToString());
+
+        }
+
+        public static void ShowPiece (Piece piece) {
+
+            //Verifing piece color
+            if (piece.GetColor() == Color.White) {
+
+                //Printing the piece signature
+                Console.Write(showdown.ToString());
+                showdown.Clear();
+            }
+            else {
+
+                //Backuping the original console text color
+                ConsoleColor backup = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Yellow;
+
+                //Printing the piece signature
+                Console.Write(showdown.ToString());
+                showdown.Clear();
+
+                //Restoring the backup color
+                Console.ForegroundColor = backup;
+
+            }
 
         }
 
