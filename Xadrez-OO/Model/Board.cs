@@ -1,4 +1,6 @@
-﻿namespace Xadrez_OO.Model {
+﻿using Xadrez_OO.Exceptions;
+
+namespace Xadrez_OO.Model {
 
     class Board {
 
@@ -68,6 +70,9 @@
         //Class Methods
         public void PlacePiece (Piece p, Position pos) {
 
+            //Verifing if the coordinates are clear
+            if (HasPiece(pos)) throw new BoardException("There is a piece in this position already!");
+
             //Recovering coordinates
             int x = pos.GetLine();
             int y = pos.GetColumn();
@@ -82,6 +87,32 @@
 
         }
 
+        public bool HasPiece (Position pos) {
+
+            //Verifing coordinates
+            ValidatePosition(pos);
+
+            //Verifing is it has a piece
+            return GetPiece(pos.GetLine(), pos.GetColumn()) != null;
+        }
+
+        public bool IsValidPos (Position pos) {
+
+            //Recovering coordinates
+            int x = pos.GetLine();
+            int y = pos.GetColumn();
+
+            if (x < 0 || x >= this.lines || y < 0 || y >= this.columns) return false;
+
+            return true;
+
+        }
+
+        public void ValidatePosition (Position pos) {
+
+            if (!IsValidPos(pos)) throw new BoardException("Invalid Move!");
+
+        }
 
     }
 
