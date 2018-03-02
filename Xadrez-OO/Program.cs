@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Xadrez_OO.Model;
 
 namespace Xadrez_OO {
+
     class Program {
+
+        private Position position;
+
         static void Main(string[] args) {
         }
     }
