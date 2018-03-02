@@ -66,6 +66,21 @@
         }
 
         //Class Methods
+        public void PlacePiece (Piece p, Position pos) {
+
+            //Recovering coordinates
+            int x = pos.GetLine();
+            int y = pos.GetColumn();
+
+            //Verifing if its a valid position
+            if (x >= 0 && x < this.lines && y >= 0 && y < this.columns) {
+
+                //Ok Proceding
+                p.SetPosition(pos);
+                this.pieces[x, y] = p;
+            }
+
+        }
 
 
     }

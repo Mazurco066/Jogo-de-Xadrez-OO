@@ -18,15 +18,9 @@ namespace Xadrez_OO.Model {
             this.moves = 0;
         }
 
-        public Piece (Position position, Color color) {
+        public Piece(Board board, Color color) {
 
-            this.position = position;
-            this.color = color;
-        }
-
-        public Piece(Position position, Board board, Color color) {
-
-            this.position = position;
+            this.position = null;
             this.board = board;
             this.color = color;
         }
