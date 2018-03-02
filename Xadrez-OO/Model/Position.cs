@@ -1,22 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
 namespace Xadrez_OO.Model {
 
     class Position {
 
         //Atributes
-        public int line { get; set; }
-        public int column { get; set; }
+        private int line;
+        private int column;
 
-        //Constructor
+        //Constructors
+        public Position() {
+
+            this.line = 0;
+            this.column = 0;
+        }
+
         public Position(int x, int y) {
 
             this.line = x;
             this.column = y;
+        }
+
+        //Getter/Setter
+        public int GetLine() {
+
+            return this.line;
+        }
+
+        public void SetLine(int line) {
+
+            this.line = line;
+        }
+
+        public int GetColumn() {
+
+            return this.column;
+        }
+
+        public void SetColumn(int column) {
+
+            this.column = column;
         }
 
         //ToString
