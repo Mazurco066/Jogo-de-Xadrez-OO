@@ -1,5 +1,5 @@
 ﻿using System;
-using Xadrez_OO.Business;
+using Xadrez_OO.Model;
 
 namespace Xadrez_OO.Util {
 

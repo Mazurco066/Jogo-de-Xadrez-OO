@@ -1,4 +1,5 @@
-﻿using Xadrez_OO.Business.Pieces;
+﻿using Xadrez_OO.Model;
+using Xadrez_OO.Model.Pieces;
 using Xadrez_OO.Util;
 
 namespace Xadrez_OO.Business {

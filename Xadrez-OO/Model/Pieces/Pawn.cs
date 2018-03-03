@@ -1,6 +1,6 @@
 ﻿using Xadrez_OO.Util;
 
-namespace Xadrez_OO.Business.Pieces {
+namespace Xadrez_OO.Model.Pieces {
 
     class Pawn : Piece {
 

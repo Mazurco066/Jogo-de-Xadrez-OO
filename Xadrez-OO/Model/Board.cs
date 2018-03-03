@@ -1,6 +1,6 @@
 ﻿using Xadrez_OO.Exceptions;
 
-namespace Xadrez_OO.Business {
+namespace Xadrez_OO.Model {
 
     class Board {
 

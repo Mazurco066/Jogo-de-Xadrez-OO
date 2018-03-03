@@ -1,6 +1,7 @@
 ﻿using System;
 using Xadrez_OO.Business;
 using Xadrez_OO.Util;
+using Xadrez_OO.Model;
 using Xadrez_OO.Exceptions;
 
 namespace Xadrez_OO {
