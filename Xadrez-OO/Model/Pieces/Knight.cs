@@ -1,6 +1,6 @@
 ﻿using Xadrez_OO.Util;
 
-namespace Xadrez_OO.Model.Pieces {
+namespace Xadrez_OO.Business.Pieces {
 
     class Knight : Piece {
 

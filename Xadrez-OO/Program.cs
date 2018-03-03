@@ -1,6 +1,5 @@
 ﻿using System;
-using Xadrez_OO.Model;
-using Xadrez_OO.Model.Pieces;
+using Xadrez_OO.Business;
 using Xadrez_OO.Util;
 using Xadrez_OO.Exceptions;
 
@@ -8,20 +7,30 @@ namespace Xadrez_OO {
 
     class Program {
 
-        //Atributes
-        public static Board board;
-
         static void Main(string[] args) {
-
-            //Instancing board
-            board = new Board(8, 8);
 
             try {
 
-                //Placing pieces
-                board.PlacePiece(new Rook(board, Color.Black), new Position(0, 0));
-                board.PlacePiece(new Rook(board, Color.Black), new Position(1, 3));
-                board.PlacePiece(new King(board, Color.Black), new Position(2, 4));
+                //Starting a new game
+                ChessGame game = new ChessGame();
+
+                //Verifying if the game is finished
+                while (!game.IsFinished()) {
+
+                    //Printing the Chess board
+                    Console.Clear();
+                    Output.ShowBoard(game.GetBoard());
+
+                    //Reading position
+                    Console.Write("Select a piece to move: ");
+                    Position origin = Input.ReadChessPosition().ToPosition();
+                    Console.Write("Select a field to move: ");
+                    Position destiny = Input.ReadChessPosition().ToPosition();
+
+                    //Testing move
+                    game.MakeMove(origin, destiny);
+
+                }
 
             }
             catch (BoardException e) {
@@ -29,7 +38,7 @@ namespace Xadrez_OO {
                 Console.WriteLine(e.Message);
             }
 
-            Output.ShowBoard(board);
+            
 
             Console.ReadLine();
         }

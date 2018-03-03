@@ -1,6 +1,6 @@
 ﻿using Xadrez_OO.Exceptions;
 
-namespace Xadrez_OO.Model {
+namespace Xadrez_OO.Business {
 
     class Board {
 
@@ -84,6 +84,24 @@ namespace Xadrez_OO.Model {
                 p.SetPosition(pos);
                 this.pieces[x, y] = p;
             }
+
+        }
+
+        public Piece RemovePiece (Position pos) {
+
+            if (GetPiece(pos.GetLine(), pos.GetColumn()) != null) {
+
+                //Recovering piece
+                Piece piece = GetPiece(pos.GetLine(), pos.GetColumn());
+                piece.SetPosition(null);
+                this.pieces[pos.GetLine(), pos.GetColumn()] = null;
+
+                //Returning found piece
+                return piece; ;
+            }
+
+            //Retornando null pois não há peça
+            return null;
 
         }
 

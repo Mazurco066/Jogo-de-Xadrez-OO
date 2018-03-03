@@ -1,7 +1,7 @@
 ﻿using System.Text;
-using Xadrez_OO.Model;
+using Xadrez_OO.Business;
 
-namespace Xadrez_OO.Model {
+namespace Xadrez_OO.Business {
 
     class ChessPos {
 

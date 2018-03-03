@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Text;
-using Xadrez_OO.Model;
+using Xadrez_OO.Business;
 
 namespace Xadrez_OO.Util {
 
     class Output {
+
+        /* Class for static methods that show data to final user */
 
         //String Builder for string building
         private static StringBuilder showdown; 
@@ -54,7 +56,7 @@ namespace Xadrez_OO.Util {
             }
 
             //Adding the lower field indicators
-            showdown.Append("  A B C D E F G H");
+            showdown.Append("  A B C D E F G H\n\n");
 
             //Writing the board
             Console.Write(showdown.ToString());

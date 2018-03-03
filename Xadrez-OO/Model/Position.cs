@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Xadrez_OO.Model {
+namespace Xadrez_OO.Business {
 
     class Position {
 
