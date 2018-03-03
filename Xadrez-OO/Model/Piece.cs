@@ -2,7 +2,7 @@
 
 namespace Xadrez_OO.Model {
 
-    class Piece {
+    abstract class Piece {
 
         //Atributes
         private Position position;
@@ -64,6 +64,17 @@ namespace Xadrez_OO.Model {
         public void IncrementMoves () {
 
             this.moves++;
+        }
+
+        //Class Methods
+        public abstract bool[,] Possiblemoves ();
+
+        public bool CanMove (Position pos) {
+
+            Piece p = board.GetPiece(pos.GetLine(), pos.GetColumn());
+
+            return p == null || p.GetColor() != this.color;
+
         }
 
     }

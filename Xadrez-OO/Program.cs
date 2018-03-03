@@ -11,7 +11,7 @@ namespace Xadrez_OO {
         static void Main(string[] args) {
 
             try {
-
+               
                 //Starting a new game
                 ChessGame game = new ChessGame();
 
@@ -25,6 +25,14 @@ namespace Xadrez_OO {
                     //Reading position
                     Console.Write("Select a piece to move: ");
                     Position origin = Input.ReadChessPosition().ToPosition();
+
+                    //Calculating possible moves
+                    bool[,] possibleMoves = game.GetBoard().GetPiece(origin.GetLine(), origin.GetColumn()).Possiblemoves();
+
+                    //Clearing screen for possible moves
+                    Console.Clear();
+                    Output.ShowBoard(game.GetBoard(), possibleMoves);
+
                     Console.Write("Select a field to move: ");
                     Position destiny = Input.ReadChessPosition().ToPosition();
 
@@ -38,8 +46,6 @@ namespace Xadrez_OO {
 
                 Console.WriteLine(e.Message);
             }
-
-            
 
             Console.ReadLine();
         }
