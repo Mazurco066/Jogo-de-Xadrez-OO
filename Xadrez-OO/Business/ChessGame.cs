@@ -1,4 +1,5 @@
-﻿using Xadrez_OO.Model;
+﻿using System.Collections.Generic;
+using Xadrez_OO.Model;
 using Xadrez_OO.Model.Pieces;
 using Xadrez_OO.Util;
 using Xadrez_OO.Exceptions;
@@ -13,6 +14,9 @@ namespace Xadrez_OO.Business {
         private Color turn;
         private bool finished;
 
+        private HashSet<Piece> pieces;
+        private HashSet<Piece> captured;
+
         //Constructor
         public ChessGame () {
         
@@ -21,6 +25,10 @@ namespace Xadrez_OO.Business {
             this.shift = 1;
             this.turn = Color.White;
             this.finished = false;
+
+            //Instancing lists
+            this.pieces = new HashSet<Piece>();
+            this.captured = new HashSet<Piece>();
 
             //Placing the pieces into inicial position
             StartGame();
@@ -107,6 +115,9 @@ namespace Xadrez_OO.Business {
             Piece captured = board.RemovePiece(to);
             board.PlacePiece(piece, to);
 
+            //Adding captured piece into the collection if exists
+            if (captured != null) this.captured.Add(captured);
+
         }
 
         public void PlayTurn (Position from, Position to) {
@@ -130,43 +141,93 @@ namespace Xadrez_OO.Business {
             }
         }
 
+        private void PlaceNewPiece (char column, int line, Piece piece) {
+
+            //Adds a new piece into the board and register it into the collection
+            board.PlacePiece(piece, new ChessPos(column, line).ToPosition());
+            pieces.Add(piece);
+        }
+
+        public HashSet<Piece> GetCapturedPieces (Color color) {
+
+            //Instanciando coleção de retorno
+            HashSet<Piece> _return = new HashSet<Piece>();
+
+            //Verificando peças capturadas de uma cor especificada
+            foreach (Piece _piece in this.captured) {
+
+                if (_piece.GetColor() == color) {
+
+                    _return.Add(_piece);
+                }
+
+            }
+
+            //Retornando peças encontradas
+            return _return;
+
+        }
+
+        public HashSet<Piece> GetInGamePieces (Color color) {
+
+            //Instanciando coleção de retorno
+            HashSet<Piece> _return = new HashSet<Piece>();
+
+            //Verificando peças em jogo de uma cor especificada
+            foreach (Piece _piece in this.pieces) {
+
+                if (_piece.GetColor() == color) {
+
+                    _return.Add(_piece);
+                }
+
+            }
+
+            //Removendo peças capturadas do conjunto de peças do jogo
+            _return.ExceptWith(GetCapturedPieces(color));
+
+            //Retornando peças encontradas
+            return _return;
+
+        }
+
         private void StartGame() {
 
             //Placing white pieces
-            board.PlacePiece(new Pawn(board, Color.White), new ChessPos('a', 2).ToPosition());
-            board.PlacePiece(new Pawn(board, Color.White), new ChessPos('b', 2).ToPosition());
-            board.PlacePiece(new Pawn(board, Color.White), new ChessPos('c', 2).ToPosition());
-            board.PlacePiece(new Pawn(board, Color.White), new ChessPos('d', 2).ToPosition());
-            board.PlacePiece(new Pawn(board, Color.White), new ChessPos('e', 2).ToPosition());
-            board.PlacePiece(new Pawn(board, Color.White), new ChessPos('f', 2).ToPosition());
-            board.PlacePiece(new Pawn(board, Color.White), new ChessPos('g', 2).ToPosition());
-            board.PlacePiece(new Pawn(board, Color.White), new ChessPos('h', 2).ToPosition());
-            board.PlacePiece(new Rook(board, Color.White), new ChessPos('a', 1).ToPosition());
-            board.PlacePiece(new Knight(board, Color.White), new ChessPos('b', 1).ToPosition());
-            board.PlacePiece(new Bishop(board, Color.White), new ChessPos('c', 1).ToPosition());
-            board.PlacePiece(new Queen(board, Color.White), new ChessPos('e', 1).ToPosition());
-            board.PlacePiece(new King(board, Color.White), new ChessPos('d', 1).ToPosition());
-            board.PlacePiece(new Bishop(board, Color.White), new ChessPos('f', 1).ToPosition());
-            board.PlacePiece(new Knight(board, Color.White), new ChessPos('g', 1).ToPosition());
-            board.PlacePiece(new Rook(board, Color.White), new ChessPos('h', 1).ToPosition());
+            PlaceNewPiece('a', 2, new Pawn(board, Color.White));
+            PlaceNewPiece('b', 2, new Pawn(board, Color.White));
+            PlaceNewPiece('c', 2, new Pawn(board, Color.White));
+            PlaceNewPiece('d', 2, new Pawn(board, Color.White));
+            PlaceNewPiece('e', 2, new Pawn(board, Color.White));
+            PlaceNewPiece('f', 2, new Pawn(board, Color.White));
+            PlaceNewPiece('g', 2, new Pawn(board, Color.White));
+            PlaceNewPiece('h', 2, new Pawn(board, Color.White));
+            PlaceNewPiece('a', 1, new Rook(board, Color.White));
+            PlaceNewPiece('h', 1, new Rook(board, Color.White));
+            PlaceNewPiece('b', 1, new Knight(board, Color.White));
+            PlaceNewPiece('g', 1, new Knight(board, Color.White));
+            PlaceNewPiece('c', 1, new Bishop(board, Color.White));
+            PlaceNewPiece('f', 1, new Bishop(board, Color.White));
+            PlaceNewPiece('d', 1, new King(board, Color.White));
+            PlaceNewPiece('e', 1, new Queen(board, Color.White));
 
             //Placing black pieces
-            board.PlacePiece(new Pawn(board, Color.Black), new ChessPos('a', 7).ToPosition());
-            board.PlacePiece(new Pawn(board, Color.Black), new ChessPos('b', 7).ToPosition());
-            board.PlacePiece(new Pawn(board, Color.Black), new ChessPos('c', 7).ToPosition());
-            board.PlacePiece(new Pawn(board, Color.Black), new ChessPos('d', 7).ToPosition());
-            board.PlacePiece(new Pawn(board, Color.Black), new ChessPos('e', 7).ToPosition());
-            board.PlacePiece(new Pawn(board, Color.Black), new ChessPos('f', 7).ToPosition());
-            board.PlacePiece(new Pawn(board, Color.Black), new ChessPos('g', 7).ToPosition());
-            board.PlacePiece(new Pawn(board, Color.Black), new ChessPos('h', 7).ToPosition());
-            board.PlacePiece(new Rook(board, Color.Black), new ChessPos('a', 8).ToPosition());
-            board.PlacePiece(new Knight(board, Color.Black), new ChessPos('b', 8).ToPosition());
-            board.PlacePiece(new Bishop(board, Color.Black), new ChessPos('c', 8).ToPosition());
-            board.PlacePiece(new King(board, Color.Black), new ChessPos('d', 8).ToPosition());
-            board.PlacePiece(new Queen(board, Color.Black), new ChessPos('e', 8).ToPosition());
-            board.PlacePiece(new Bishop(board, Color.Black), new ChessPos('f', 8).ToPosition());
-            board.PlacePiece(new Knight(board, Color.Black), new ChessPos('g', 8).ToPosition());
-            board.PlacePiece(new Rook(board, Color.Black), new ChessPos('h', 8).ToPosition());
+            PlaceNewPiece('a', 7, new Pawn(board, Color.Black));
+            PlaceNewPiece('b', 7, new Pawn(board, Color.Black));
+            PlaceNewPiece('c', 7, new Pawn(board, Color.Black));
+            PlaceNewPiece('d', 7, new Pawn(board, Color.Black));
+            PlaceNewPiece('e', 7, new Pawn(board, Color.Black));
+            PlaceNewPiece('f', 7, new Pawn(board, Color.Black));
+            PlaceNewPiece('g', 7, new Pawn(board, Color.Black));
+            PlaceNewPiece('h', 7, new Pawn(board, Color.Black));
+            PlaceNewPiece('a', 8, new Rook(board, Color.Black));
+            PlaceNewPiece('h', 8, new Rook(board, Color.Black));
+            PlaceNewPiece('b', 8, new Knight(board, Color.Black));
+            PlaceNewPiece('g', 8, new Knight(board, Color.Black));
+            PlaceNewPiece('c', 8, new Bishop(board, Color.Black));
+            PlaceNewPiece('f', 8, new Bishop(board, Color.Black));
+            PlaceNewPiece('d', 8, new King(board, Color.Black));
+            PlaceNewPiece('e', 8, new Queen(board, Color.Black));
 
         }
 

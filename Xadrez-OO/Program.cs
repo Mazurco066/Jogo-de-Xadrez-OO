@@ -28,10 +28,7 @@ namespace Xadrez_OO {
                         Console.WriteLine();
                         Output.ShowBoard(game.GetBoard());
 
-                        //Displaying game info
-                        Console.WriteLine(" Shift: " + game.GetShift());
-                        Console.WriteLine(" Waiting for: " + game.GetTurn());
-                        Console.WriteLine();
+                        Output.DisplayGameInfo(game);
 
                         //Reading position
                         Console.Write(" Select a piece to move: ");

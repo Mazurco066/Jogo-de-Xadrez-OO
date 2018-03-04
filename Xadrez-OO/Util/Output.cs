@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
+using Xadrez_OO.Business;
 using Xadrez_OO.Model;
 
 namespace Xadrez_OO.Util {
@@ -12,7 +14,7 @@ namespace Xadrez_OO.Util {
         private static StringBuilder showdown; 
 
         //Normal Methods
-        public static void ShowBoard(Board board) {
+        public static void ShowBoard (Board board) {
 
             //Instancing StringBuilder
             showdown = new StringBuilder();
@@ -53,7 +55,7 @@ namespace Xadrez_OO.Util {
         }
 
         //Overcharged method
-        public static void ShowBoard(Board board, bool[,] moves) {
+        public static void ShowBoard (Board board, bool[,] moves) {
 
             //Backuping the original console background color
             ConsoleColor backup = Console.BackgroundColor;
@@ -105,6 +107,54 @@ namespace Xadrez_OO.Util {
 
         }
 
+        //Método para imprimir informações d apartida atual
+        public static void DisplayGameInfo (ChessGame game) {
+
+            //Displaying captured pieces
+            DisplayCapturedPieces(game);
+
+            //Displaying game info
+            Console.WriteLine(" Shift: " + game.GetShift());
+            Console.WriteLine(" Waiting for: " + game.GetTurn());
+            Console.WriteLine();
+
+        }
+
+        //Método para imprimir peças capturadas
+        public static void DisplayCapturedPieces (ChessGame game) {
+
+            Console.WriteLine(" Captures Pieces");
+            Console.Write(" White: ");
+            DisplayPieces(game.GetCapturedPieces(Color.White));
+            Console.WriteLine();
+            Console.Write(" Black: ");
+            ConsoleColor backup = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            DisplayPieces(game.GetCapturedPieces(Color.Black));
+            Console.ForegroundColor = backup;
+            Console.WriteLine();
+            Console.WriteLine();
+
+        }
+
+        //Método para recuperar peças capturadas do conjunto
+        public static void DisplayPieces (HashSet<Piece> pieces) {
+
+            //Abrindo conjunto para impressão
+            Console.Write("[");
+
+            //Percorrenco conjunto
+            foreach (Piece _piece in pieces) {
+
+                Console.Write(_piece + " ");
+            }
+
+            //Fechando conjunto após impresso
+            Console.Write("]");
+
+        }
+
+        //Método para imprimir peças com cores determinadas
         public static void ShowPiece (Piece piece) {
 
             //Verifying if it has a piece
