@@ -66,6 +66,11 @@ namespace Xadrez_OO.Model {
             this.moves++;
         }
 
+        public void DecrementMoves () {
+
+            this.moves--;
+        }
+
         //Class Methods
         public bool HasPossibleMoves () {
 

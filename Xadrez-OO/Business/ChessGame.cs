@@ -13,6 +13,7 @@ namespace Xadrez_OO.Business {
         private int shift;
         private Color turn;
         private bool finished;
+        private bool check;
 
         private HashSet<Piece> pieces;
         private HashSet<Piece> captured;
@@ -25,6 +26,7 @@ namespace Xadrez_OO.Business {
             this.shift = 1;
             this.turn = Color.White;
             this.finished = false;
+            this.check = false;
 
             //Instancing lists
             this.pieces = new HashSet<Piece>();
@@ -76,6 +78,11 @@ namespace Xadrez_OO.Business {
             return this.finished;
         }
 
+        public bool IsChecked () {
+
+            return this.check;
+        }
+
         //Class Methods
         public void ValidateOrigin (Position origin) {
 
@@ -107,7 +114,7 @@ namespace Xadrez_OO.Business {
 
         }
 
-        public void MakeMove (Position from, Position to) {
+        public Piece MakeMove (Position from, Position to) {
 
             //Removing piece from original position and placing into a new one
             Piece piece = board.RemovePiece(from);
@@ -118,12 +125,54 @@ namespace Xadrez_OO.Business {
             //Adding captured piece into the collection if exists
             if (captured != null) this.captured.Add(captured);
 
+            //Returing captured piece
+            return captured;
+
         }
+
+        public void UndoMove (Position from, Position to, Piece piece) {
+
+            //Removendo peça na posição de destino (ultima jogada)
+            Piece p = board.RemovePiece(to);
+            p.DecrementMoves();
+
+            //Verificando se alguma peça foi capturada no processo
+            if (piece != null) {
+
+                //Recolocando peça capturada
+                board.PlacePiece(piece, to);
+                captured.Remove(piece);
+            }
+
+            //Recolocando a peçamovida para origem
+            board.PlacePiece(p, from);
+            
+        } 
 
         public void PlayTurn (Position from, Position to) {
 
             //Making a move
-            MakeMove(from, to);
+            Piece cap = MakeMove(from, to);
+
+            //Verificando se essa jogada te deixa em check
+            if (InCheck(turn)) {
+
+                //Desfazendo a jogada
+                UndoMove(from, to, cap);
+                throw new BoardException(" You cannot put yourself in check!");
+
+            }
+
+            //Verificando se jogador adversário esta em check
+            if (InCheck(GetEnemyColor(turn))) {
+
+                check = true;
+            }
+            else {
+
+                check = false;
+            }
+
             ChangeTurn();
             this.shift++;
 
@@ -191,7 +240,34 @@ namespace Xadrez_OO.Business {
 
         }
 
-        private void StartGame() {
+        private Color GetEnemyColor (Color color) {
+
+            if (color == Color.White) {
+
+                return Color.Black;
+            }
+            else {
+
+                return Color.White;
+            }
+        }
+
+        private Piece GetKing (Color color) {
+
+            //Percorrendo peças em jogo e procurando pelo rei
+            foreach (Piece x in GetInGamePieces(color)) {
+
+                //Rei encontrado
+                if (x is King) return x;
+
+            }
+
+            //Rei não encontrado
+            return null;
+
+        }
+
+        private void StartGame () {
 
             //Placing white pieces
             PlaceNewPiece('a', 2, new Pawn(board, Color.White));
@@ -228,6 +304,36 @@ namespace Xadrez_OO.Business {
             PlaceNewPiece('f', 8, new Bishop(board, Color.Black));
             PlaceNewPiece('d', 8, new King(board, Color.Black));
             PlaceNewPiece('e', 8, new Queen(board, Color.Black));
+
+        }
+
+        //Check methods
+        public bool InCheck (Color color) {
+
+            //Recuperando rei da cor
+            Piece king = GetKing(color);
+
+            //Exceção que não será disparada provavelmente mais vai que...
+            if (king == null) throw new BoardException(" Ops... looks like an error ocurred, you have no king!");
+
+            //Varrendo todas as peças adversárias  vendo se há algo dando check no rei
+            foreach (Piece x in GetInGamePieces (GetEnemyColor(color)) {
+
+                //Recuperando movimentos possiveis
+                bool[,] moves = x.Possiblemoves();
+
+                //Verificando se há algo dando check na posição do rei
+                if (moves[king.GetPosition().GetLine(), king.GetPosition().GetColumn()]) {
+
+                    //King is in check
+                    return true;
+                }
+
+            }
+
+
+            //King is not in check
+            return false;
 
         }
 

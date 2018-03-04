@@ -117,6 +117,10 @@ namespace Xadrez_OO.Util {
             Console.WriteLine(" Shift: " + game.GetShift());
             Console.WriteLine(" Waiting for: " + game.GetTurn());
             Console.WriteLine();
+            if (game.IsChecked()) {
+                Console.WriteLine("CHECK!");
+                Console.WriteLine();
+            }
 
         }
 
