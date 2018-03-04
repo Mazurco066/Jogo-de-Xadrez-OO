@@ -125,6 +125,26 @@ namespace Xadrez_OO.Business {
             //Adding captured piece into the collection if exists
             if (captured != null) this.captured.Add(captured);
 
+            //# Adding Special Move: roque pequeno
+            if (piece is King && to.GetColumn() == from.GetColumn() + 2) {
+
+                Position ft = new Position(from.GetLine(), from.GetLine() + 3);
+                Position dt = new Position(from.GetLine(), from.GetLine() + 1);
+                Piece rook = board.RemovePiece(ft);
+                rook.IncrementMoves();
+                board.PlacePiece(rook, dt);
+            }
+
+            //# Adding Special Move: roque grande
+            if (piece is King && to.GetColumn() == from.GetColumn() - 2) {
+
+                Position ft = new Position(from.GetLine(), from.GetLine() - 4);
+                Position dt = new Position(from.GetLine(), from.GetLine() - 1);
+                Piece rook = board.RemovePiece(ft);
+                rook.IncrementMoves();
+                board.PlacePiece(rook, dt);
+            }
+
             //Returing captured piece
             return captured;
 
@@ -146,7 +166,27 @@ namespace Xadrez_OO.Business {
 
             //Recolocando a peçamovida para origem
             board.PlacePiece(p, from);
-            
+
+            //# Removing Special Move: roque pequeno
+            if (piece is King && to.GetColumn() == from.GetColumn() + 2) {
+
+                Position ft = new Position(from.GetLine(), from.GetLine() + 3);
+                Position dt = new Position(from.GetLine(), from.GetLine() + 1);
+                Piece king = board.RemovePiece(dt);
+                king.DecrementMoves();
+                board.PlacePiece(king, ft);
+            }
+
+            //# Adding Special Move: roque grande
+            if (piece is King && to.GetColumn() == from.GetColumn() - 2) {
+
+                Position ft = new Position(from.GetLine(), from.GetLine() - 4);
+                Position dt = new Position(from.GetLine(), from.GetLine() - 1);
+                Piece king = board.RemovePiece(dt);
+                king.DecrementMoves();
+                board.PlacePiece(king, ft);
+            }
+
         } 
 
         public void PlayTurn (Position from, Position to) {
@@ -295,8 +335,8 @@ namespace Xadrez_OO.Business {
             PlaceNewPiece('g', 1, new Knight(board, Color.White));
             PlaceNewPiece('c', 1, new Bishop(board, Color.White));
             PlaceNewPiece('f', 1, new Bishop(board, Color.White));
-            PlaceNewPiece('d', 1, new King(board, Color.White));
-            PlaceNewPiece('e', 1, new Queen(board, Color.White));
+            PlaceNewPiece('d', 1, new Queen(board, Color.White));
+            PlaceNewPiece('e', 1, new King(board, Color.White, this));
 
             //Placing black pieces
             PlaceNewPiece('a', 7, new Pawn(board, Color.Black));
@@ -313,8 +353,8 @@ namespace Xadrez_OO.Business {
             PlaceNewPiece('g', 8, new Knight(board, Color.Black));
             PlaceNewPiece('c', 8, new Bishop(board, Color.Black));
             PlaceNewPiece('f', 8, new Bishop(board, Color.Black));
-            PlaceNewPiece('d', 8, new King(board, Color.Black));
-            PlaceNewPiece('e', 8, new Queen(board, Color.Black));
+            PlaceNewPiece('d', 8, new Queen(board, Color.Black));
+            PlaceNewPiece('e', 8, new King(board, Color.Black, this));
 
         }
 
