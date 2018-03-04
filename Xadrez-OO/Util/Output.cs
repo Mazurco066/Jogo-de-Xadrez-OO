@@ -115,11 +115,24 @@ namespace Xadrez_OO.Util {
 
             //Displaying game info
             Console.WriteLine(" Shift: " + game.GetShift());
-            Console.WriteLine(" Waiting for: " + game.GetTurn());
-            Console.WriteLine();
-            if (game.IsChecked()) {
-                Console.WriteLine("CHECK!");
+
+            //Verifying if the game is finished
+            if (! game.IsFinished()) {
+
+                Console.WriteLine(" Waiting for: " + game.GetTurn());
                 Console.WriteLine();
+                if (game.IsChecked()) {
+                    Console.WriteLine("CHECK!");
+                    Console.WriteLine();
+                }
+
+            }
+            else {
+
+                //Mates
+                Console.WriteLine();
+                Console.WriteLine("CHECKMATES!");
+                Console.WriteLine("Winner: " + game.GetTurn());
             }
 
         }

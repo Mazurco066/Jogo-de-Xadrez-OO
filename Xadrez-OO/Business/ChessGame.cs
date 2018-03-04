@@ -173,8 +173,19 @@ namespace Xadrez_OO.Business {
                 check = false;
             }
 
-            ChangeTurn();
-            this.shift++;
+            //Verificando check mate
+            if (Mates(GetEnemyColor(turn))) {
+
+                //Finalizando jogo
+                finished = true;
+            }
+            else {
+
+                //Finalizando turno  e mudando de jogador
+                ChangeTurn();
+                this.shift++;
+
+            }       
 
         }
 
@@ -334,6 +345,46 @@ namespace Xadrez_OO.Business {
 
             //King is not in check
             return false;
+
+        }
+
+        public bool Mates (Color color) {
+
+            //Verificando se está em check
+            if (!InCheck(color)) return false;
+
+            //Varrendo todas peças da cor indicada
+            foreach (Piece x in GetInGamePieces(color)) {
+
+                bool[,] moves = x.Possiblemoves();
+
+                //Verificando se há ao menos um movimento possivel para tirar co check
+                for (int i = 0; i < board.GetLines(); i++) {
+
+                    for (int j = 0; j < board.GetColumns(); j++) {
+
+                        if (moves[i,j]) {
+
+                            //Tentando realizar um movimento
+                            Position from = x.GetPosition();
+                            Position to = new Position(i, j);
+                            Piece cap = MakeMove(from, to);
+                            bool checkTest = InCheck(color);
+                            UndoMove(from, to, cap);
+
+                            //Ta salvo rapas heuhe não é mate ainda
+                            if (!checkTest) return false;
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+            //Fudeo de vez maluco, check mate
+            return true;
 
         }
 

@@ -65,6 +65,10 @@ namespace Xadrez_OO {
 
                 }
 
+                //Imprimindo resultados da partida
+                Console.Clear();
+                Output.DisplayGameInfo(game);    
+
             }
             catch (BoardException e) {
 
