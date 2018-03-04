@@ -328,7 +328,7 @@ namespace Xadrez_OO.Business {
             if (king == null) throw new BoardException(" Ops... looks like an error ocurred, you have no king!");
 
             //Varrendo todas as peças adversárias  vendo se há algo dando check no rei
-            foreach (Piece x in GetInGamePieces (GetEnemyColor(color)) {
+            foreach (Piece x in GetInGamePieces (GetEnemyColor(color))) {
 
                 //Recuperando movimentos possiveis
                 bool[,] moves = x.Possiblemoves();

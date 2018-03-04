@@ -100,7 +100,7 @@ namespace Xadrez_OO.Util {
             }
 
             //Adding the lower field indicators
-            showdown.Append("  A B C D E F G H\n\n");
+            showdown.Append("   A B C D E F G H\n\n");
 
             //Writing the board
             Console.Write(showdown.ToString());
@@ -122,7 +122,7 @@ namespace Xadrez_OO.Util {
                 Console.WriteLine(" Waiting for: " + game.GetTurn());
                 Console.WriteLine();
                 if (game.IsChecked()) {
-                    Console.WriteLine("CHECK!");
+                    Console.WriteLine(" CHECK!");
                     Console.WriteLine();
                 }
 
@@ -131,8 +131,8 @@ namespace Xadrez_OO.Util {
 
                 //Mates
                 Console.WriteLine();
-                Console.WriteLine("CHECKMATES!");
-                Console.WriteLine("Winner: " + game.GetTurn());
+                Console.WriteLine(" CHECKMATES!");
+                Console.WriteLine(" Winner: " + game.GetTurn());
             }
 
         }

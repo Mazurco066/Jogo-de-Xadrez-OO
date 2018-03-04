@@ -67,6 +67,8 @@ namespace Xadrez_OO {
 
                 //Imprimindo resultados da partida
                 Console.Clear();
+                Console.WriteLine();
+                Output.ShowBoard(game.GetBoard());
                 Output.DisplayGameInfo(game);    
 
             }
