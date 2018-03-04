@@ -1,11 +1,20 @@
 ﻿using Xadrez_OO.Util;
+using Xadrez_OO.Business;
 
 namespace Xadrez_OO.Model.Pieces {
 
     class Pawn : Piece {
 
+        //Attributes
+        private ChessGame game;
+
         //Constructors
         public Pawn(Board board, Color color) : base(board, color) { }
+
+        public Pawn(Board board, Color color, ChessGame game) : base(board, color) {
+
+            this.game = game;
+        }
 
         //toString
         public override string ToString() {
@@ -78,6 +87,35 @@ namespace Xadrez_OO.Model.Pieces {
                     _return[pos.GetLine(), pos.GetColumn()] = true;
                 }
 
+                //# Special move: EnPassant
+                if (GetPosition().GetLine() == 3) {
+
+                    //Verificando se é possivel dar um passant
+                    Position left = new Position(GetPosition().GetLine(), GetPosition().GetColumn() - 1);
+                    Position right = new Position(GetPosition().GetLine(), GetPosition().GetColumn() + 1);
+
+                    //Verificando casa da esquerda
+                    if (GetBoard().IsValidPos(left) 
+                        && HasEnemy(left)
+                        && GetBoard().GetPiece(left.GetLine(), left.GetColumn()) == game.GetEnPassant()) {
+
+                        //Ok esta liberado o passant
+                        _return[left.GetLine() - 1, left.GetColumn()] = true;
+
+                    }
+
+                    //Verificando casa da direita
+                    if (GetBoard().IsValidPos(right)
+                        && HasEnemy(right)
+                        && GetBoard().GetPiece(right.GetLine(), right.GetColumn()) == game.GetEnPassant()) {
+
+                        //Ok esta liberado o passant
+                        _return[right.GetLine() - 1, right.GetColumn()] = true;
+
+                    }
+
+                }
+
             }
             else {
 
@@ -119,6 +157,35 @@ namespace Xadrez_OO.Model.Pieces {
 
                     //Ok pode mover para essa posição
                     _return[pos.GetLine(), pos.GetColumn()] = true;
+                }
+
+                //# Special move: EnPassant
+                if (GetPosition().GetLine() == 4) {
+
+                    //Verificando se é possivel dar um passant
+                    Position left = new Position(GetPosition().GetLine(), GetPosition().GetColumn() - 1);
+                    Position right = new Position(GetPosition().GetLine(), GetPosition().GetColumn() + 1);
+
+                    //Verificando casa da esquerda
+                    if (GetBoard().IsValidPos(left)
+                        && HasEnemy(left)
+                        && GetBoard().GetPiece(left.GetLine(), left.GetColumn()) == game.GetEnPassant()) {
+
+                        //Ok esta liberado o passant
+                        _return[left.GetLine() + 1, left.GetColumn()] = true;
+
+                    }
+
+                    //Verificando casa da direita
+                    if (GetBoard().IsValidPos(right)
+                        && HasEnemy(right)
+                        && GetBoard().GetPiece(right.GetLine(), right.GetColumn()) == game.GetEnPassant()) {
+
+                        //Ok esta liberado o passant
+                        _return[right.GetLine() + 1, right.GetColumn()] = true;
+
+                    }
+
                 }
 
             }
