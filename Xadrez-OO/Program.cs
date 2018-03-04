@@ -15,29 +15,56 @@ namespace Xadrez_OO {
                 //Starting a new game
                 ChessGame game = new ChessGame();
 
+                //Console settings
+                Console.Title = "C# Chess";
+
                 //Verifying if the game is finished
                 while (!game.IsFinished()) {
 
-                    //Printing the Chess board
-                    Console.Clear();
-                    Output.ShowBoard(game.GetBoard());
+                    try {
 
-                    //Reading position
-                    Console.Write("Select a piece to move: ");
-                    Position origin = Input.ReadChessPosition().ToPosition();
+                        //Printing the Chess board
+                        Console.Clear();
+                        Console.WriteLine();
+                        Output.ShowBoard(game.GetBoard());
 
-                    //Calculating possible moves
-                    bool[,] possibleMoves = game.GetBoard().GetPiece(origin.GetLine(), origin.GetColumn()).Possiblemoves();
+                        //Displaying game info
+                        Console.WriteLine(" Shift: " + game.GetShift());
+                        Console.WriteLine(" Waiting for: " + game.GetTurn());
+                        Console.WriteLine();
 
-                    //Clearing screen for possible moves
-                    Console.Clear();
-                    Output.ShowBoard(game.GetBoard(), possibleMoves);
+                        //Reading position
+                        Console.Write(" Select a piece to move: ");
+                        Position origin = Input.ReadChessPosition().ToPosition();
 
-                    Console.Write("Select a field to move: ");
-                    Position destiny = Input.ReadChessPosition().ToPosition();
+                        //Validating the position
+                        game.ValidateOrigin(origin);
 
-                    //Testing move
-                    game.MakeMove(origin, destiny);
+                        //Calculating possible moves
+                        bool[,] possibleMoves = game.GetBoard().GetPiece(origin.GetLine(), origin.GetColumn()).Possiblemoves();
+
+                        //Clearing screen for possible moves
+                        Console.Clear();
+                        Console.WriteLine();
+                        Output.ShowBoard(game.GetBoard(), possibleMoves);
+
+                        Console.Write(" Select a field to move: ");
+                        Position destiny = Input.ReadChessPosition().ToPosition();
+
+                        //Validating the position
+                        game.ValidateDestiny(origin, destiny);
+
+                        //Testing move
+                        game.PlayTurn(origin, destiny);
+
+                    }
+                    catch (BoardException e) {
+
+                        //Ops... something is wrong
+                        Console.WriteLine();
+                        Console.WriteLine(e.Message);
+                        Console.ReadLine();
+                    }
 
                 }
 

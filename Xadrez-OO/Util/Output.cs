@@ -25,7 +25,7 @@ namespace Xadrez_OO.Util {
             for (int i = 0; i < MaxLines; i ++) {
 
                 //Adding left field indicators
-                showdown.Append(MaxLines - i).Append(" ");
+                showdown.Append(" ").Append(MaxLines - i).Append(" ");
                 Console.Write(showdown.ToString());
                 showdown.Clear();
 
@@ -45,7 +45,7 @@ namespace Xadrez_OO.Util {
             }
 
             //Adding the lower field indicators
-            showdown.Append("  A B C D E F G H\n\n");
+            showdown.Append("   A B C D E F G H\n\n");
 
             //Writing the board
             Console.Write(showdown.ToString());
@@ -70,7 +70,7 @@ namespace Xadrez_OO.Util {
             for (int i = 0; i < MaxLines; i++) {
 
                 //Adding left field indicators
-                showdown.Append(MaxLines - i).Append(" ");
+                showdown.Append(" ").Append(MaxLines - i).Append(" ");
                 Console.Write(showdown.ToString());
                 showdown.Clear();
 

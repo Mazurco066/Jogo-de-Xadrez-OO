@@ -1,6 +1,7 @@
 ﻿using Xadrez_OO.Model;
 using Xadrez_OO.Model.Pieces;
 using Xadrez_OO.Util;
+using Xadrez_OO.Exceptions;
 
 namespace Xadrez_OO.Business {
 
@@ -68,6 +69,36 @@ namespace Xadrez_OO.Business {
         }
 
         //Class Methods
+        public void ValidateOrigin (Position origin) {
+
+            //Selecionou campo vazio
+            if (board.GetPiece(origin.GetLine(), origin.GetColumn()) == null) {
+
+                throw new BoardException(" This field is empty!");
+            }
+            //Selecionou peça do inimigo
+            else if (turn != board.GetPiece(origin.GetLine(), origin.GetColumn()).GetColor()) {
+
+                throw new BoardException(" This piece isn't yours!");
+            }
+            //Selecionou peça com nenhum movimento possivel
+            else if (!board.GetPiece(origin.GetLine(), origin.GetColumn()).HasPossibleMoves()) {
+
+                throw new BoardException(" There is no possible moves for this piece!");
+            }
+
+        }
+
+        public void ValidateDestiny (Position origin, Position destiny) {
+
+            //Invalid move
+            if (!board.GetPiece(origin.GetLine(), origin.GetColumn()).CanMoveTo(destiny)) {
+
+                throw new BoardException(" Invalid move!");
+            }
+
+        }
+
         public void MakeMove (Position from, Position to) {
 
             //Removing piece from original position and placing into a new one
@@ -76,6 +107,27 @@ namespace Xadrez_OO.Business {
             Piece captured = board.RemovePiece(to);
             board.PlacePiece(piece, to);
 
+        }
+
+        public void PlayTurn (Position from, Position to) {
+
+            //Making a move
+            MakeMove(from, to);
+            ChangeTurn();
+            this.shift++;
+
+        }
+
+        public void ChangeTurn () {
+
+            if (turn == Color.White) {
+
+                this.turn = Color.Black;
+            }
+            else {
+
+                this.turn = Color.White;
+            }
         }
 
         private void StartGame() {

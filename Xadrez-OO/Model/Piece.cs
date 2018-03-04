@@ -67,6 +67,26 @@ namespace Xadrez_OO.Model {
         }
 
         //Class Methods
+        public bool HasPossibleMoves () {
+
+            //Recovering possible moves
+            bool[,] moves = Possiblemoves();
+
+            //Verifying the moves
+            for (int i = 0; i < GetBoard().GetLines(); i++) {
+
+                for (int j = 0; j < GetBoard().GetColumns(); j++) {
+
+                    //Ok has moves
+                    if (moves[i, j]) return true;
+                }
+            }
+
+            //Returning no possible moves
+            return false;
+
+        }
+
         public abstract bool[,] Possiblemoves ();
 
         public bool CanMove (Position pos) {
@@ -75,6 +95,11 @@ namespace Xadrez_OO.Model {
 
             return p == null || p.GetColor() != this.color;
 
+        }
+
+        public bool CanMoveTo(Position pos) {
+
+            return Possiblemoves()[pos.GetLine(), pos.GetColumn()];
         }
 
     }
