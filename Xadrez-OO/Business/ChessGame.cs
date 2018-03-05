@@ -260,6 +260,27 @@ namespace Xadrez_OO.Business {
 
             }
 
+            Piece p = board.GetPiece(to.GetLine(), to.GetColumn());
+
+            //# Special Move: promoção
+            if (p is Pawn) {
+
+                //Verificando cor
+                if (p.GetColor() == Color.White && to.GetLine() == 0
+                    || p.GetColor() == Color.Black && to.GetLine() == 7) {
+
+                    p = board.RemovePiece(to);
+                    pieces.Remove(p);
+
+                    //Criando nova rainha para substituir o peão promovido
+                    Piece queen = new Queen(board, p.GetColor());
+                    board.PlacePiece(queen, to);
+                    pieces.Add(queen);
+
+                }
+
+            }
+
             //Verificando se jogador adversário esta em check
             if (InCheck(GetEnemyColor(turn))) {
 
@@ -285,7 +306,6 @@ namespace Xadrez_OO.Business {
             }
 
             //# Special move: EnPassant
-            Piece p = board.GetPiece(to.GetLine(), to.GetColumn());
             if (p is Pawn 
                 && to.GetLine() == from.GetLine() -2 
                 || to.GetLine() == from.GetLine() + 2) {
