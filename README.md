@@ -4,7 +4,7 @@ Jogo de Xadrez desenvolvido em C# para modo console usando todos os conceitos do
 
 ## Metodologia
 
-* **Desenvolvimento em Camadas"
+* **Desenvolvimento em Camadas**
 
 ## Developer
 
